@@ -3,13 +3,14 @@ const router = express.Router();
 const passport = require('passport');
 const Order = require('../../model/Order');
 const User_coin = require('../../model/User_coin_data');
+const LineEnv = require('../../config/env')
 require("dotenv").config();
 const cache = require("memory-cache");
 const uuid = require('uuid')
 const line_pay = require("line-pay");
 const pay = new line_pay({
-    channelId: '1565571453',
-    channelSecret: '79d947dde411cc38096de23cc1f31c96',
+    channelId: LineEnv.channelId,
+    channelSecret: LineEnv.channelSecret,
     isSandbox: true
 });
 
