@@ -1,0 +1,11 @@
+#label-upload{
+  background-color: #1A69DA;  
+}
+
+#label-upload:hover{
+  background-color: #134792;
+}
+
+input:focus {
+    outline:none;
+}

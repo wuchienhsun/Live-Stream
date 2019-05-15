@@ -1,0 +1,15 @@
+
+# 忽略所有 config 目錄下附檔名是 .js 的檔案
+/config/*.js
+config/
+
+# 忽略所有 db 目錄下附檔名是 .sqlite3 的檔案
+/db/*.js
+db/
+
+# 忽略所有附檔名是 .pem 的檔案
+*.pem
+
+node_modules/
+
+

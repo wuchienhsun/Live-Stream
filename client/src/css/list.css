@@ -1,0 +1,36 @@
+#link{
+  border: 1px #FFF solid;  
+  background-color:#FFF;
+}
+
+#stream_img{
+  height: 138px;
+  width: 246px;
+}
+
+#stream_name{
+  font-size: 26px;
+}
+#span_name{
+  color: gray;
+}
+
+@media screen and (max-width: 1200px) {
+  #stream_img{
+    width: 200px;
+    height: 138px;
+  }
+}
+@media screen and (max-width: 1200px) {
+  #stream_img{
+    width: 150px;
+    height: 138px;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  #stream_img{
+    width: 246px;
+
+  }
+}

@@ -1,0 +1,43 @@
+#video_name{
+  font-size: 12px;
+}
+
+
+#video_path{
+  font-size: 12px;
+}
+
+
+#video{
+  padding-top: -10%;
+  max-height: 200px;
+  width: 100%;
+  background-color: black;
+}
+Card{
+  margin-bottom: 5vh;  
+}
+#flex{
+  display: flex;
+}
+
+#flex-container{
+  flex-wrap: wrap;
+}
+#loading{
+  color: #ffffff;
+}
+
+#card-footer {
+  display: flex;
+  align-items: center;
+}
+.card-footer-div {
+  margin-right: auto;
+}
+#footer-img{
+  text-align: right;
+  margin-right: 5px;
+  width: 16px;
+  height: 16px;
+}

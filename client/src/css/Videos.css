@@ -1,0 +1,39 @@
+
+.card-footer-div {
+  margin-right: auto;
+}
+.cardbody{  
+  text-align: center;
+  
+}
+
+#videoElement{  
+  max-height: 50vh;
+  max-width: 50vw;
+}
+
+#footer-img{
+  text-align: right;
+  margin-right: 5px;
+  width: 16px;
+  height: 16px;
+}
+
+#footer-div-img{
+  width: 16px;
+  height: 16px;
+}
+
+#durationBar{
+  border:solid 1px #164900;
+  width:100%;
+  margin-bottom:5px;
+}
+
+#positionBar{
+  height:20px;
+  color:white;
+  font-weight:bold;
+  background:#2D9900;
+  text-align:center;
+}

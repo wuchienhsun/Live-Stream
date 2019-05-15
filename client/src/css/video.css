@@ -1,0 +1,30 @@
+#row{
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+#streamVideo{
+  margin-top: 5vh;
+  margin-bottom: 50vh;
+  flex: 0 0 75%;
+  max-width: 75%;
+}
+
+#chat{
+  flex: 0 0 25%;
+  max-width: 25%;
+}
+@media screen and (max-width: 750px) {
+  #row{
+    margin-right: -15px;
+    margin-left: -15px;
+  }
+  #chat{
+    flex: none;
+  }
+  #streamVideo{
+    margin-top: 5vh;
+    margin-bottom: 50vh;
+  }
+}
