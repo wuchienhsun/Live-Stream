@@ -9,14 +9,14 @@ A website which can share live stream, download YouTube video into website and e
 # Technologies
 
 * **Backend**
-  * Language: Node.js
-  * Library & Framework: Express / Socket.IO
+  * Language: JavaScript
+  * Library & Framework: Node.js / Express / Socket.IO
   * Database: MySQL
   * ORM: Sequelize.js
   * Data security & check: Passport.js / Validate.js / JWT(JSON Web Tokens)
   * Unit Test: Mocha
   * Cloud service: AWS EC2
-  * CloudFront : AWS CDN
+  * CDN : AWS CloudFront
   * Simple Storage Service: AWS S3
 * **Front-End**
   * Language: HTML / CSS / JavaScript
