@@ -26,7 +26,7 @@
   * Website design: Single Page Application
 # Backend Architecture
 
-![img](https://i.imgur.com/EIFxWfb.png)
+![img](https://i.imgur.com/AJXKc5p.png)
 
 # Database Schema
 
