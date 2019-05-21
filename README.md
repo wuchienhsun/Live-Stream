@@ -28,6 +28,10 @@
 
 ![img](https://i.imgur.com/AJXKc5p.png)
 
+# Stream Architecture
+
+![img](https://i.imgur.com/80pdYDB.png)
+
 # Features
 
 
