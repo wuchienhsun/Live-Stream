@@ -14,7 +14,7 @@ A website which can share live stream, download YouTube video into website and e
   * Library & Framework: Node.js / Express / Socket.IO
   * Database: MySQL
   * ORM: Sequelize.js
-  * Data security & check: Passport.js / Validate.js / JWT(JSON Web Tokens)
+  * Data security & validation: Passport.js / Validate.js / JWT(JSON Web Tokens)
   * Unit Test: Mocha
   * Cloud service: AWS EC2
   * CDN : AWS CloudFront
