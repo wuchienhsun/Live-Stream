@@ -28,10 +28,6 @@
 
 ![img](https://i.imgur.com/AJXKc5p.png)
 
-# Database Schema
-
-
-
 # Features
 
 
