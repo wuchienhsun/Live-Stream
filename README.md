@@ -1,5 +1,6 @@
 # Live-Stream
 A website which can share live stream, download YouTube video into website and edit it.
+![img](https://i.imgur.com/clQLbnR.jpg)
 
 [Live Stream](https://www.wuhsun.com "Title")
 
@@ -26,7 +27,7 @@ A website which can share live stream, download YouTube video into website and e
 * [API Document](https://www.wuhsun.com "Title")
 
 # Features
-![img](https://i.imgur.com/clQLbnR.jpg)
+
 * Video online editing
 ![img](https://i.imgur.com/PuwVSHp.png)
 * Realtime Live Stream and Chat Room
