@@ -50,20 +50,3 @@
 
 
 
-# API Documentation
- * USER API
- <table>
-　<tr>
-　<td>這裡是第一行的第一個欄位</td>
-　<td>這裡是第一行的第二個欄位</td>
-　</tr>
-　<tr>
-　<td>這裡是第二行的第一個欄位</td>
-　<td>這裡是第二行的第二個欄位</td>
-　</tr>
-</table>
- * STREAM API
- * VIDEO API
- * DONATE API
- * COIN API
- * CHECKOUT API
