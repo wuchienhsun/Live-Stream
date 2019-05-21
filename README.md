@@ -30,7 +30,7 @@
 
 # Stream Architecture
 
-![img](https://i.imgur.com/80pdYDB.png)
+![img](https://i.imgur.com/undefined.png)
 
 # Features
 
