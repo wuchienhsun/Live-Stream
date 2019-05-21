@@ -25,18 +25,25 @@
   * Website design: Single Page Application
 # Backend Architecture
 
+![img](https://i.imgur.com/Bz6SS4L.png)
+
 # Database Schema
+
 
 
 # Features
 
+
 * **Video online editing**
+
 ![img](https://i.imgur.com/PuwVSHp.png)
 
 * **Realtime Live Stream and Chat Room**
+
 ![img](https://i.imgur.com/uJ44Wql.png)
 
 * **Upload video or put URL to download YouTobe video**
+
 ![img](https://i.imgur.com/m0oHlb6.png)
 
 
