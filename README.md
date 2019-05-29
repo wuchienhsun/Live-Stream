@@ -29,7 +29,7 @@
 ![img](https://i.imgur.com/AJXKc5p.png)
 
 # Database Schema
-![img](https://i.imgur.com/uU1J9Ve.png)
+![img](https://i.imgur.com/1ZhePUM.png)
 
 # Stream Architecture
 
