@@ -9,8 +9,8 @@ const cache = require("memory-cache");
 const uuid = require('uuid')
 const line_pay = require("line-pay");
 const pay = new line_pay({
-    channelId: LineEnv.channelId,
-    channelSecret: LineEnv.channelSecret,
+    channelId: LineEnv.channel_Id,
+    channelSecret: LineEnv.channel_Secret,
     isSandbox: true
 });
 
