@@ -3,14 +3,13 @@ const router = express.Router();
 const passport = require('passport');
 const Order = require('../../model/Order');
 const User_coin = require('../../model/User_coin_data');
-const LineEnv = require('../../config/env')
 require("dotenv").config();
 const cache = require("memory-cache");
 const uuid = require('uuid')
 const line_pay = require("line-pay");
 const pay = new line_pay({
-    channelId: LineEnv.channelId,
-    channelSecret: LineEnv.channelSecret,
+    channelId: '1565571453',
+    channelSecret: '79d947dde411cc38096de23cc1f31c96',
     isSandbox: true
 });
 
@@ -18,14 +17,16 @@ const pay = new line_pay({
 // @desc    buy Coin and insert Order
 // @access  Private
 router.post("/pay:method/reserve", passport.authenticate('jwt', { session: false }), (req, res) => {
+    const user_id = req.user.id
     let { method } = req.params
-    let user_id = req.user.id
     let options = {
-        productName: "プロテイン",
+        productName: "z",
         amount: 1000,
         currency: "TWD",
         orderId: uuid(),
         confirmUrl: 'https://www.wuhsun.com/api/checkout/pay/confirm'
+        // confirmUrl: 'http://localhost:5000/api/checkout/pay/confirm'
+
     }
     switch (method) {
         case method = 'a':
@@ -91,13 +92,11 @@ router.get("/pay/confirm", (req, res) => {
 
 
     pay.confirm(confirmation).then((response) => {
-        let select = {
-            where: { transactionId: confirmation.transactionId }
-        }
+        const select = { where: { transactionId: confirmation.transactionId } }
         Order.findAll(select)
             .then((datas) => {
-                let data = datas[0].dataValues
-                let coin = data.coin
+                const data = datas[0].dataValues
+                const coin = data.coin
                 Order.update({
                     pay_succ: true
                 }, select)
@@ -127,11 +126,7 @@ router.get("/pay/confirm", (req, res) => {
 // @desc    see buy coin details
 // @access  Private
 router.get('/details', passport.authenticate('jwt', { session: false }), (req, res) => {
-    let select = {
-        where: {
-            user_id: req.user.id
-        }
-    };
+    const select = { where: { user_id: req.user.id } };
     Order.findAll(select)
         .then(datas => {
             if (datas.length === 0) {
@@ -141,7 +136,6 @@ router.get('/details', passport.authenticate('jwt', { session: false }), (req, r
                 for (let i = 0; i < datas.length; i++) {
                     data.push(datas[i].dataValues);
                 }
-                console.log("resultdata", data);
                 res.send(data);
             }
         })

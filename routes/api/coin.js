@@ -8,8 +8,9 @@ const User_coin = require('../../model/User_coin_data');
 // @desc    get current coin
 // @access  private
 router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
-  let { id, name } = req.user
-  User_coin.findAll({ where: { user_id: id } })
-    .then(datas => { if (datas.length === 0) { return res.json({ coin: 0 }) } res.json({ coin: [datas[0].coin] }); })
+  User_coin.findOne({ where: { user_id: req.user.id } })
+    .then(datas => {
+      if (datas === null) { return res.json({ coin: 0 }) } res.json({ coin: datas.coin });
+    })
 })
 module.exports = router

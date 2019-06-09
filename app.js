@@ -1,5 +1,3 @@
-const https = require('https');
-const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
 const db = require('./db/db');
@@ -9,27 +7,16 @@ const path = require('path');
 const User = require('./model/User');
 const morgan = require('morgan');
 
+// const connectPath = 'http://localhost:3000/a.'
+const connectPath = 'https://www.wuhsun.com/a.'
+
 const app = express();
 
-app.use("/api/", function (req, res, next) {
-  res.set("Access-Control-Allow-Origin", "*");
-  res.set("Access-Control-Allow-Headers", "Origin, Content-Type, Authorization");
-  res.set("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
-  res.set("Access-Control-Allow-Credentials", "true");
-  next();
-});
-
-// app.use(morgan('dev'));
 
 app.use(express.static(path.join(__dirname, 'build')));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-// app.engine('handlebars', exphbs({
-//   defaultLayout: 'main'
-// }));
-// app.set('view engine', 'handlebars');
 
 db.sequelize.authenticate()
   .then(() => { console.log('Connection has been established successfully.'); })
@@ -63,25 +50,24 @@ app.get('/video/:id', function (req, res) {
 });
 
 
-let options = {
-  key: fs.readFileSync('./privkey.pem'),
-  cert: fs.readFileSync('./cert.pem'),
-  ca: fs.readFileSync('./chain.pem')
-};
-let httpsServer = https.createServer(options, app);
+// let options = {
+//   key: fs.readFileSync('./privkey.pem'),
+//   cert: fs.readFileSync('./cert.pem'),
+//   ca: fs.readFileSync('./chain.pem')
+// };
+// let httpsServer = https.createServer(options, app);
 
-let ser = httpsServer.listen(443);
+// let ser = httpsServer.listen(443);
 
-let io = require('socket.io').listen(ser);
+// let io = require('socket.io').listen(ser);
 
-// const port = process.env.PORT || 5000;
-// const server = require('http').Server(app)
-//   .listen(port, () => console.log(`Server and socket.io started on port ${port}`));
-// const io = require('socket.io')(server);
-// app.set('socketio', io)
+const port = process.env.PORT || 5000;
+const server = require('http').Server(app)
+  .listen(port, () => console.log(`Server and socket.io started on port ${port}`));
+const io = require('socket.io')(server);
+app.set('socketio', io)
 
-// const connectPath = 'http://localhost:3000/a.'
-const connectPath = 'https://www.wuhsun.com/a.'
+
 
 
 

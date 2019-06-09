@@ -24,11 +24,11 @@ const s3Client = s3.s3Client;
 //          //
 //          //
 
-md5 = (text) => {
+const md5 = (text) => {
   return crypto.createHash('md5').update(text).digest('hex');
 }
 
-readVideoBuffer = (path, id, originalname, callback) => {
+const readVideoBuffer = (path, id, originalname, callback) => {
   fs.readFile(path, (err, fileBuffer) => {
     if (err) throw err;
     let times = Date.parse(new Date()).toString();
@@ -40,7 +40,7 @@ readVideoBuffer = (path, id, originalname, callback) => {
   })
 }
 
-ytdlFunc = (videoUserPath, url, id, callback) => {
+const ytdlFunc = (videoUserPath, url, id, callback) => {
   let video = ytdl(url, ['--format=18'], { cwd: videoUserPath });
   video.on('info', function (info) {
     console.log('Download started');
@@ -62,7 +62,7 @@ ytdlFunc = (videoUserPath, url, id, callback) => {
   })
 }
 
-s3uploadFunc = (paramsKey, paramsBody, userID, originalVideoName, VideoPath, callback) => {
+const s3uploadFunc = (paramsKey, paramsBody, userID, originalVideoName, VideoPath, callback) => {
   const params = s3.uploadVideoParams;
   params.Key = paramsKey;
   params.Body = paramsBody;

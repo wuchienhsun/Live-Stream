@@ -14,6 +14,7 @@ const User = require('../../model/User');
 const Stream = require('../../model/Stream');
 const Coin = require('../../model/User_coin_data')
 const StreamCate = require('../../model/Stream_cate')
+const db = require('../../db/db').sequelize;
 
 const validateRegisterInput = require('../../validation/register');
 const validateLoginInput = require('../../validation/login');
@@ -22,69 +23,75 @@ const validateEmailChange = require('../../validation/email_change');
 const s3UploadImg_url = 'https://d6u0gq2utdlwf.cloudfront.net/project_2/'
 
 // Load User model
-function replaceword(word) {
-  return word.replace(/\.|\//g, "");
+const replaceword = (word) => word.replace(/\.|\//g, "");
+
+async function createUserData(transaction, id, name) {
+  try {
+    transaction = await db.transaction();
+    await request('https://picsum.photos/200', (err, response) => {
+      User.update({ img: response.request.uri.href }, { where: { id } }, { transaction })
+    })
+    await request('https://picsum.photos/200', (err, response) => {
+      Stream.create({
+        user_id: id,
+        stream_room: name,
+        stream_name: '未設置',
+        stream_detail: '未設置',
+        stream_img: response.request.uri.href
+      }, { transaction }).then(res => transaction.commit())
+    })
+    await Coin.create({ user_id: id, coin: 0 }, { transaction })
+  } catch (err) {
+    if (err) await transaction.rollback();
+    await console.log('err: some err')
+  }
 }
+
+
 
 // @route   POST api/users/register
 // @desc    Register user
 // @access  Public
 router.post('/register', (req, res) => {
   const { errors, isValid } = validateRegisterInput(req.body);
+  let transaction
   // Check validation
   if (!isValid) { return res.status(400).json(errors); }
   const { email, name } = req.body
-  request('https://picsum.photos/200', (error, response, body) => {
-    console.log('img href', response.request.uri.href)
-    User.findOrCreate({
-      where: { [Op.or]: [{ email }, { name }] },
-      defaults: {
-        name: req.body.name,
-        email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, 10),
-        streamKey: replaceword(bcrypt.hashSync(req.body.name + Date.now(), 10)),
-        img: response.request.uri.href
-      }
-    })
-      .then(([user, created]) => {
-        if (created === false) {
-          if (user.dataValues.name === name) {
-            if (user.dataValues.email === email) {
-              errors.email = 'Email already exists';
-              errors.name = 'Name already exists';
-              return res.status(400).json(errors);
-            } else {
-              errors.name = 'Name already exists';
-              return res.status(400).json(errors);
-            }
-          } else {
+  User.findOrCreate({
+    where: { [Op.or]: [{ email }, { name }] },
+    defaults: {
+      name: req.body.name,
+      email: req.body.email,
+      password: bcrypt.hashSync(req.body.password, 10),
+      streamKey: replaceword(bcrypt.hashSync(req.body.name + Date.now(), 10)),
+    }
+  })
+    .then(([user, created]) => {
+      if (created === false) {
+        if (user.dataValues.name === name) {
+          if (user.dataValues.email === email) {
             errors.email = 'Email already exists';
+            errors.name = 'Name already exists';
+            return res.status(400).json(errors);
+          } else {
+            errors.name = 'Name already exists';
             return res.status(400).json(errors);
           }
         } else {
-          Coin.create({ user_id: user.id, coin: 0 }).then(datas => {
-            request('https://picsum.photos/200', (error, response, body) => {
-              console.log('img href', response.request.uri.href)
-              Stream.create({
-                user_id: user.id,
-                stream_room: user.name,
-                stream_name: '未設置',
-                stream_detail: '未設置',
-                stream_img: response.request.uri.href
-              }).then(datas => { res.json(user); })
-                .catch(err => {
-                  errors.system = '系統錯誤';
-                  return res.status(400).json(errors);
-                })
-            })
-          })
+          errors.email = 'Email already exists';
+          return res.status(400).json(errors);
         }
-      })
-      .catch(err => {
-        errors.system = '系統錯誤';
-        return res.status(400).json(errors);
-      });
-  })
+      } else {
+        res.json({ success: 'register success' });
+        createUserData(transaction, user.id, user.name)
+      }
+    })
+    .catch(err => {
+      errors.system = '系統錯誤';
+      return res.status(400).json(errors);
+    });
+
 });
 
 // @route   POST api/users/login
@@ -94,11 +101,9 @@ router.post('/login', (req, res) => {
   const { errors, isValid } = validateLoginInput(req.body);
   if (!isValid) { return res.status(400).json(errors); }
   const { email, password } = req.body;
-  User.findAll({ where: { email } })
-    .then(data => {
-      // Check for user
-      if (data.length === 1) {
-        let user = data[0].dataValues
+  User.findOne({ where: { email } })
+    .then(user => {
+      if (user !== null) {
         bcrypt.compare(password, user.password)
           .then(isMatch => {
             if (isMatch) {
@@ -146,36 +151,35 @@ router.get('/current', passport.authenticate('jwt', { session: false }), (req, r
 // @access  public
 router.post('/streamKey', (req, res) => {
   const { user_name } = req.body
-  User.findAll({ where: { name: user_name } })
-    .then(datas => {
-      let data = datas[0].dataValues
-      if (datas.length === 1) {
-        Stream.findAll({ where: { user_id: data.id } })
-          .then(result => {
-            StreamCate.findAll({ where: { id: result[0].dataValues.stream_id } })
-              .then(final => {
-                if (result.length === 0) {
+  User.findOne({ where: { name: user_name } })
+    .then(user => {
+      if (user !== null) {
+        Stream.findOne({ where: { user_id: user.id } })
+          .then(stream => {
+            StreamCate.findOne({ where: { id: stream.stream_id } })
+              .then(cate => {
+                if (stream !== 0) {
+                  res.json({
+                    Key: user.streamKey,
+                    Name: stream.stream_name,
+                    Detail: stream.stream_detail,
+                    Cate: cate.name,
+                    host: user_name,
+                    id: user.id
+                  })
+                } else {
                   return res.json({
-                    Key: data.streamKey,
+                    Key: user.streamKey,
                     Name: '沒有實況名稱 = =',
                     Detail: '沒有實況介紹',
                     host: user_name,
-                    id: data.id
-                  })
-                } else {
-                  res.json({
-                    Key: data.streamKey,
-                    Name: result[0].dataValues.stream_name,
-                    Detail: result[0].dataValues.stream_detail,
-                    Cate: final[0].dataValues.name,
-                    host: user_name,
-                    id: data.id
+                    id: user.id
                   })
                 }
-              }).catch(err => res.status(404).json({ err }))
+              })
+              .catch(err => res.status(404).json({ err }))
           })
           .catch(err => res.status(404).json({ err }))
-        // res.json({Key:data.streamKey,Name})
       }
     })
     .catch(err => res.status(404).json({ err }))
@@ -189,15 +193,15 @@ router.post('/email_change', passport.authenticate('jwt', { session: false }), (
   const { errors, isValid } = validateEmailChange(req.body);
   if (!isValid) { return res.status(400).json(errors); }
   const { email } = req.body;
-  User.findAll({ where: { email } })
+  User.findOne({ where: { email } })
     .then(data => {
-      if (data.length === 0) {
+      if (data !== null) {
+        errors.email = '信箱已被使用過，請改用其他信箱';
+        return res.status(400).json(errors);
+      } else {
         User.update({ email }, { where: { id: req.user.id } })
           .then(datas => { return res.json({ msg: '修改成功，請重新登入' }) })
           .catch(err => res.status(404).json({ err }))
-      } else {
-        errors.email = '信箱已被使用過，請改用其他信箱';
-        return res.status(400).json(errors);
       }
     })
 })
