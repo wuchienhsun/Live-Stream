@@ -37,7 +37,7 @@
     "socket.io": "^2.2.0",
     "streaming-s3": "^0.4.4",
     "uuid": "^3.3.2",
-    "validator": "^10.11.0"
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "mocha": "^6.1.4",
